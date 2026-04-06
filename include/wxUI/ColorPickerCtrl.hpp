@@ -40,7 +40,8 @@ struct ColorPickerCtrl {
     }
 
     explicit ColorPickerCtrl(wxWindowID identity, wxColour const& color = wxBLACK)
-        : ColorPickerCtrl(identity, color)
+        : details_(identity)
+        , color_(color)
     {
     }
 
