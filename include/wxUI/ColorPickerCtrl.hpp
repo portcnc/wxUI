@@ -34,12 +34,12 @@ namespace wxUI {
 struct ColorPickerCtrl {
     using underlying_t = wxColourPickerCtrl;
 
-    explicit ColorPickerCtrl(wxColour const& color = wxBLACK)
+    explicit ColorPickerCtrl(wxColour const& color = *wxBLACK)
         : ColorPickerCtrl(wxID_ANY, color)
     {
     }
 
-    explicit ColorPickerCtrl(wxWindowID identity, wxColour const& color = wxBLACK)
+    explicit ColorPickerCtrl(wxWindowID identity, wxColour const& color = *wxBLACK)
         : details_(identity)
         , color_(color)
     {
