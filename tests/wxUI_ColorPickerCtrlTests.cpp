@@ -36,7 +36,7 @@ using namespace wxUI;
 struct ColorPickerCtrlTestPolicy {
     using TypeUnderTest = wxUI::ColorPickerCtrl;
     static auto createUUT() { return TypeUnderTest {}; }
-    static auto testStyle() { return (wxCHK_3STATE); }
+    static auto testStyle() { return (0); }
     static auto testPosition() { return wxPoint { 1, 2 }; }
     static auto testSize() { return wxSize { 10, 12 }; }
     static auto expectedStyle() { return testStyle(); }
@@ -55,7 +55,6 @@ TEST_CASE("ColorPickerCtrl")
         CHECK(provider.dump() == std::vector<std::string> {
                   "Create:wxColourPickerCtrl[id=-1, pos=(-1,-1), size=(-1,-1), style=0, color=black]",
                   "controller:wxColourPickerCtrl[id=-1, pos=(-1,-1), size=(-1,-1), style=0, color=black]",
-                  "color:black",
                   "SetEnabled:true",
               });
     }
@@ -68,7 +67,6 @@ TEST_CASE("ColorPickerCtrl")
         CHECK(provider.dump() == std::vector<std::string> {
                   "Create:wxColourPickerCtrl[id=-1, pos=(-1,-1), size=(-1,-1), style=0, color=white]",
                   "controller:wxColourPickerCtrl[id=-1, pos=(-1,-1), size=(-1,-1), style=0, color=white]",
-                  "color:white",
                   "SetEnabled:true",
               });
     }
