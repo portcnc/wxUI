@@ -394,7 +394,7 @@ struct std::formatter<wxUITests::TestParent, char> {
             std::format_to(ctx.out(), ", value3State={}", *c.value3State == wxCHK_UNCHECKED ? "unchecked" : (*c.value3State == wxCHK_CHECKED ? "checked" : "undetermined"));
         }
         if (c.color.has_value()) {
-            std::format_to(ctx.out(), ", color={}", c.color.GetAsString(wxC2S_NAME | wxC2S_HTML_SYNTAX).utf8_string());
+            std::format_to(ctx.out(), ", color={}", c.color->GetAsString(wxC2S_NAME | wxC2S_HTML_SYNTAX).utf8_string());
         }
         if (c.range.has_value()) {
             std::format_to(ctx.out(), ", range=[{},{}]", c.range->first, c.range->second);
