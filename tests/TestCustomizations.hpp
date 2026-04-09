@@ -36,6 +36,7 @@ SOFTWARE.
 #include <wx/checkbox.h>
 #include <wx/choice.h>
 #include <wx/choicebk.h>
+#include <wx/clrpicker.h>
 #include <wx/combobox.h>
 #include <wx/gauge.h>
 #include <wx/hyperlink.h>
