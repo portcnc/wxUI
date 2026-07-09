@@ -8,10 +8,13 @@ C++ header-only library to make declarative UIs for `wxWidgets`.
   - [Menu Proxy](#menu-proxy)
   - [Menu ForEach](#menu-foreach)
 - [Layout](#layout)
+  - [Spacer/StretchSpacer](#spacerstretchspacer)
+  - [Scrolled](#scrolled)
   - [LayoutIf](#layoutif)
   - [ForEach](#foreach)
   - [BookCtrl](#bookctrl)
   - [Splitter](#splitter)
+  - [StdDialogButtons](#stddialogbuttons)
 - [Controllers](#controllers)
   - [Bind](#bind)
   - [Proxy](#proxy)
@@ -169,6 +172,16 @@ This table shows which Layout to use for the desired behavior
 {{{ examples/HelloWidgets/ExtendedExample.cpp SpacerExample "    // ..." }}}
 ```
 
+### Scrolled
+
+Often when a Layout has many *Controllers* you would need to be able to have scrollbars to allow scrolling around the dialog.  The `withScrollRate` member function on *Layout* objects controls both if there should be scrollbars, and if so, that the rate of scrolling should be.  Providing a single value would set the scroll rate for both X and Y directions, or two arguments would set them individually.  
+
+```
+{{{ examples/HelloWidgets/ExtendedExample.cpp ScrolledExample "    // ..." }}}
+```
+
+Scrolling is achieved by creating a `wxScrolledWindow` into which the layout is then inserted.  Note that this means that for `Factory` the parent *Window* object that is supplied may not be the same object that the *Layout* used for the call `fitTo`.  It also means that *Dialogs* that use `CreateStdDialogButtonSizer` in a *Layout* would not work correctly as the Sizer where the `wxStdDialogButtonSizer` is inserted would not be the Dialog sizer.  See [StdDialogButtons](#stddialogbuttons) for further information.
+
 ### LayoutIf
 
 `LayoutIf` is useful for when parts of a Layout are not needed depending on runtime logic.  `LayoutIf` takes a boolean which determines if a set of "Items" should be created or not.
@@ -215,6 +228,16 @@ All book controls are populated with `BookItem` declarations, which can contain 
 ```cpp
 {{{ examples/HelloWidgets/ExtendedExample.cpp SplitterExample "    // ..." }}}
 ```
+
+### StdDialogButtons
+
+`StdDialogButtons` allows you to insert a `wxStdDialogButtonSizer`, similar to `CreateStdDialogButtonSizer`:
+
+```cpp
+{{{ examples/HelloWidgets/HelloWidgets.cpp StdDialogButtons "    // ..." }}}
+```
+
+It should be noted that due to how `wxUI` handles construction of *Windows* and may nest *Controllers*, using a `wxStdDialogButtonSizer` returned by `CreateStdDialogButtonSizer()` can lead to issues.  It is recommended to use `StdDialogButtons` to get consistent behavior.
 
 ## Controllers
 

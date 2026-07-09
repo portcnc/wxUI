@@ -111,6 +111,20 @@ SOFTWARE.
     }
 #endif
 
+#if !defined(WXUI_FORWARD_SCROLL_TO_DETAILS)
+#define WXUI_FORWARD_SCROLL_TO_DETAILS(ControllerType)                                                                                       \
+    auto withScrollBars(std::optional<int> xScrollRate = std::nullopt, std::optional<int> yScrollRate = std::nullopt) & -> ControllerType&   \
+    {                                                                                                                                        \
+        details_.withScrollBars(xScrollRate, yScrollRate);                                                                                   \
+        return *this;                                                                                                                        \
+    }                                                                                                                                        \
+    auto withScrollBars(std::optional<int> xScrollRate = std::nullopt, std::optional<int> yScrollRate = std::nullopt) && -> ControllerType&& \
+    {                                                                                                                                        \
+        details_.withScrollBars(xScrollRate, yScrollRate);                                                                                   \
+        return std::move(*this);                                                                                                             \
+    }
+#endif
+
 #if !defined(WXUI_FORWARD_ALL_TO_DETAILS)
 #define WXUI_FORWARD_ALL_TO_DETAILS(ControllerType)                                                \
     WXUI_RULE_OF_SIX_BOILERPLATE(ControllerType)                                                   \
@@ -131,4 +145,13 @@ SOFTWARE.
     [[nodiscard]] auto getPos() const { return details_.getPos(); }                                \
     [[nodiscard]] auto getSize() const { return details_.getSize(); }                              \
     [[nodiscard]] auto getStyle() const { return details_.getStyle(); }
+#endif
+
+#if !defined(WXUI_FITTO_DETAILS)
+#define WXUI_FITTO_DETAILS()              \
+    template <typename Parent>            \
+    auto fitTo(Parent* parent) -> Parent* \
+    {                                     \
+        return details_.fitTo(parent);    \
+    }
 #endif

@@ -303,9 +303,15 @@ struct TestParent {
     std::list<TestSizer> sizers {};
     std::list<TestMenu> menus {}; // Storage for mock menus
     std::list<TestMenuBar> menuBars {}; // Storage for mock menubars
+    mutable int nextMenuControlId { wxID_AUTO_LOWEST }; // Per-frame counter for menu control IDs
 
     TestSizer* currentSizer {};
-    TestParent* currentMenu {};
+    std::list<TestParent> scrollers {};
+    void SetScrollRate(int x, int y)
+    {
+        log.push_back(std::format("SetScrollRate:{},{}", x, y));
+    }
+
     void SetSizer(TestSizer* sizer) { currentSizer = sizer; }
     void SetSashGravity(double gravity)
     {
@@ -505,6 +511,9 @@ inline auto TestParent::dump() const -> std::vector<std::string>
     for (auto sizer : sizers) {
         result.push_back(std::format("sizer:{}", sizer));
         result.insert(result.end(), sizer.log.begin(), sizer.log.end());
+    }
+    for (auto const& scroller : scrollers) {
+        result.push_back(std::format("scroller:{}", scroller));
     }
     return result;
 }
@@ -988,6 +997,12 @@ inline auto SizerCreate(wxUITests::TestParent* parent, SizerInfo const& info) ->
         info);
 }
 
+inline auto ScrolledWindowCreate(wxUITests::TestParent* parent) -> wxUITests::TestParent*
+{
+    parent->scrollers.emplace_back();
+    return parent;
+}
+
 // Menu customization overloads for TestParent - creates mock menus instead of real wx objects
 inline auto MenuCreate(wxUITests::TestParent& parent) -> wxUITests::TestMenu*
 {
@@ -1091,6 +1106,13 @@ inline void MenuBindToFrame(wxUITests::TestParent& frame, int identity, std::var
 {
     auto count = std::ranges::count_if(frame.log, [identity](auto const& e) { return e.starts_with(std::format("BindMenu:{}", identity)); });
     frame.log.push_back(std::format("BindMenu:{}:{}", identity, count + 1));
+}
+
+inline int MenuNewControlId(wxUITests::TestParent& frame)
+{
+    // For tests, provide predictable IDs starting at wxID_AUTO_LOWEST
+    // Each TestParent gets its own counter for test isolation
+    return frame.nextMenuControlId++;
 }
 
 // Proxy binding customization points for menu items in tests
