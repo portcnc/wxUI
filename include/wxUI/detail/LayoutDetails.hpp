@@ -242,6 +242,7 @@ struct BoxSizer {
             details_.fitTo(this->template createImpl<std::remove_pointer_t<decltype(scroller)>>(), scroller);
             auto xScrollRate = std::get<0>(scrollRate_).value_or(1);
             auto yScrollRate = std::get<1>(scrollRate_).value_or(xScrollRate);
+            scroller->FitInside();
             scroller->SetScrollRate(xScrollRate, yScrollRate);
             return parent;
         }
