@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.28)
 
 # Initial project declaration (version will be updated from git tags)
-project(wxUI)
+project(wxUI LANGUAGES CXX OBJCXX)
 
 # Determine version from git tags and set PROJECT_VERSION
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.cmake)
