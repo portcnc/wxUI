@@ -121,6 +121,21 @@ namespace details {
         {
         }
 
+        struct Proxy : details::Proxy<Book> {
+        };
+
+        auto withProxy(Proxy const& proxy) & -> BookCtrl<Book, Items...>&
+        {
+            proxyHandles_.push_back(proxy);
+            return *this;
+        }
+
+        auto withProxy(Proxy const& proxy) && -> BookCtrl<Book, Items...>&&
+        {
+            proxyHandles_.push_back(proxy);
+            return std::move(*this);
+        }
+
         template <typename Parent, typename Sizer>
         auto createAndAdd(Parent* parent, Sizer* parentSizer, wxSizerFlags const& parentFlags)
         {
@@ -131,10 +146,22 @@ namespace details {
         }
 
     private:
+        template <typename Widget>
+        auto bindProxy(Widget* widget)
+        {
+            for (auto& proxyHandle : proxyHandles_) {
+                using ::wxUI::customizations::ControllerBindProxy;
+                ControllerBindProxy(widget, proxyHandle);
+            }
+            return widget;
+        }
+
         template <typename Parent>
         auto constructBook(Parent* parent) const
         {
-            return customizations::ParentCreate<Book>(parent, wxID_ANY);
+            auto *child = customizations::ParentCreate<Book>(parent, wxID_ANY);
+            bindProxy(child);
+            return child;
         }
 
         template <typename Parent>
@@ -152,6 +179,7 @@ namespace details {
 
         std::optional<wxSizerFlags> flags_ {};
         std::tuple<Items...> items_ {};
+        std::vector<Proxy> proxyHandles_ {};
     };
 
 } // namespace details
