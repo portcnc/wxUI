@@ -48,6 +48,8 @@ Notebook(Items... items) -> Notebook<Items...>;
 template <details::SizerItem... Items>
 Notebook(wxSizerFlags const& flags, Items... items) -> Notebook<Items...>;
 
+using NotebookProxy = details::Proxy<wxNotebook>;
+
 template <details::SizerItem... Items>
 struct Choicebook : details::BookCtrl<wxChoicebook, Items...> {
     using Base = details::BookCtrl<wxChoicebook, Items...>;
@@ -59,6 +61,8 @@ Choicebook(Items... items) -> Choicebook<Items...>;
 
 template <details::SizerItem... Items>
 Choicebook(wxSizerFlags const& flags, Items... items) -> Choicebook<Items...>;
+
+using ChoicebookProxy = details::Proxy<wxChoicebook>;
 
 template <details::SizerItem... Items>
 struct Listbook : details::BookCtrl<wxListbook, Items...> {
@@ -72,6 +76,8 @@ Listbook(Items... items) -> Listbook<Items...>;
 template <details::SizerItem... Items>
 Listbook(wxSizerFlags const& flags, Items... items) -> Listbook<Items...>;
 
+using ListbookProxy = details::Proxy<wxListbook>;
+
 template <details::SizerItem... Items>
 struct Simplebook : details::BookCtrl<wxSimplebook, Items...> {
     using Base = details::BookCtrl<wxSimplebook, Items...>;
@@ -84,6 +90,8 @@ Simplebook(Items... items) -> Simplebook<Items...>;
 template <details::SizerItem... Items>
 Simplebook(wxSizerFlags const& flags, Items... items) -> Simplebook<Items...>;
 
+using SimplebookProxy = details::Proxy<wxSimplebook>;
+
 template <details::SizerItem... Items>
 struct Treebook : details::BookCtrl<wxTreebook, Items...> {
     using Base = details::BookCtrl<wxTreebook, Items...>;
@@ -95,6 +103,8 @@ Treebook(Items... items) -> Treebook<Items...>;
 
 template <details::SizerItem... Items>
 Treebook(wxSizerFlags const& flags, Items... items) -> Treebook<Items...>;
+
+using TreebookProxy = details::Proxy<wxTreebook>;
 
 }
 

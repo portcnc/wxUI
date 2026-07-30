@@ -105,9 +105,10 @@ template <details::SizerItem Item>
 BookItem(wxUI_String, wxString const& caption, bool select, Item&& item) -> BookItem<Item>;
 
 namespace details {
-
     template <typename Book, SizerItem... Items>
     struct BookCtrl {
+        using Proxy = details::Proxy<Book>;
+
         template <SizerItem... UItems>
         explicit BookCtrl(UItems&&... items)
             : items_(std::forward_as_tuple(std::forward<UItems>(items)...))
@@ -120,9 +121,6 @@ namespace details {
             , items_(std::forward_as_tuple(std::forward<UItems>(items)...))
         {
         }
-
-        struct Proxy : details::Proxy<Book> {
-        };
 
         auto withProxy(Proxy const& proxy) & -> BookCtrl<Book, Items...>&
         {
