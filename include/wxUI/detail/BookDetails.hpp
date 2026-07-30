@@ -157,7 +157,7 @@ namespace details {
         template <typename Parent>
         auto constructBook(Parent* parent)
         {
-            auto *child = customizations::ParentCreate<Book>(parent, wxID_ANY);
+            auto* child = customizations::ParentCreate<Book>(parent, wxID_ANY);
             bindProxy(child);
             return child;
         }
