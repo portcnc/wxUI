@@ -105,9 +105,10 @@ template <details::SizerItem Item>
 BookItem(wxUI_String, wxString const& caption, bool select, Item&& item) -> BookItem<Item>;
 
 namespace details {
-
     template <typename Book, SizerItem... Items>
     struct BookCtrl {
+        using Proxy = details::Proxy<Book>;
+
         template <SizerItem... UItems>
         explicit BookCtrl(UItems&&... items)
             : items_(std::forward_as_tuple(std::forward<UItems>(items)...))
@@ -121,6 +122,18 @@ namespace details {
         {
         }
 
+        auto withProxy(Proxy const& proxy) & -> BookCtrl<Book, Items...>&
+        {
+            proxyHandles_.push_back(proxy);
+            return *this;
+        }
+
+        auto withProxy(Proxy const& proxy) && -> BookCtrl<Book, Items...>&&
+        {
+            proxyHandles_.push_back(proxy);
+            return std::move(*this);
+        }
+
         template <typename Parent, typename Sizer>
         auto createAndAdd(Parent* parent, Sizer* parentSizer, wxSizerFlags const& parentFlags)
         {
@@ -131,10 +144,22 @@ namespace details {
         }
 
     private:
-        template <typename Parent>
-        auto constructBook(Parent* parent) const
+        template <typename Widget>
+        auto bindProxy(Widget* widget)
         {
-            return customizations::ParentCreate<Book>(parent, wxID_ANY);
+            for (auto& proxyHandle : proxyHandles_) {
+                using ::wxUI::customizations::ControllerBindProxy;
+                ControllerBindProxy(widget, proxyHandle);
+            }
+            return widget;
+        }
+
+        template <typename Parent>
+        auto constructBook(Parent* parent)
+        {
+            auto* child = customizations::ParentCreate<Book>(parent, wxID_ANY);
+            bindProxy(child);
+            return child;
         }
 
         template <typename Parent>
@@ -152,6 +177,7 @@ namespace details {
 
         std::optional<wxSizerFlags> flags_ {};
         std::tuple<Items...> items_ {};
+        std::vector<Proxy> proxyHandles_ {};
     };
 
 } // namespace details
