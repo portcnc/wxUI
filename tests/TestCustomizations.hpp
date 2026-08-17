@@ -417,7 +417,7 @@ struct std::formatter<wxUITests::TestParent, char> {
             std::format_to(ctx.out(), ", majorDim={}", *c.majorDim);
         }
         if (c.minSize.has_value()) {
-            std::format_to(ctx.out(), ", minSize={},{}", c.minSize.GetWidth(), c.minSize.GetHeight());
+            std::format_to(ctx.out(), ", minSize={},{}", c.minSize->GetWidth(), c.minSize->GetHeight());
         }
         return std::format_to(ctx.out(), "]");
     }
