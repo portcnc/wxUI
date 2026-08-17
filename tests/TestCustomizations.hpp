@@ -272,6 +272,7 @@ struct TestSizer {
     wxOrientation orientation {};
     std::optional<int> cols {};
 
+    void FitInside(TestParent*);
     void SetSizeHints(TestParent*);
     void Add(TestParent*, wxSizerFlags const& flags);
     void Add(TestSizer*, wxSizerFlags const& flags);
@@ -524,6 +525,11 @@ inline auto TestParent::dump() const -> std::vector<std::string>
         result.push_back(std::format("scroller:{}", scroller));
     }
     return result;
+}
+
+inline void TestSizer::FitInside(TestParent* controller)
+{
+    log.push_back(std::format("FitInside:{}", *controller));
 }
 
 inline void TestSizer::SetSizeHints(TestParent* controller)
