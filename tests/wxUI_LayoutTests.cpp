@@ -754,6 +754,8 @@ TEST_CASE("Size")
                   "SetEnabled:true",
                   "sizer:Sizer[orientation=wxVERTICAL]",
                   "Add:wxButton[id=-1, pos=(-1,-1), size=(-1,-1), style=0, text=\"Hello\"]:flags:(0,0x0,0)",
+                  "FitInside:[id=0, pos=(0,0), size=(0,0), style=0]",
+                  "sizer:Sizer[orientation=wxVERTICAL]",
                   "SetSizeHints:[id=0, pos=(0,0), size=(0,0), style=0]",
                   "scroller:[id=0, pos=(0,0), size=(0,0), style=0]",
               });
