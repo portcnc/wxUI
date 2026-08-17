@@ -148,10 +148,16 @@ SOFTWARE.
 #endif
 
 #if !defined(WXUI_FITTO_DETAILS)
-#define WXUI_FITTO_DETAILS()              \
-    template <typename Parent>            \
-    auto fitTo(Parent* parent) -> Parent* \
-    {                                     \
-        return details_.fitTo(parent);    \
+#define WXUI_FITTO_DETAILS()                  \
+    template <typename Parent>                \
+    auto fitTo(Parent* parent) -> Parent*     \
+    {                                         \
+        return details_.fitTo(parent);        \
+    }                                         \
+                                              \
+    template <typename Parent>                \
+    auto fitInside(Parent* parent) -> Parent* \
+    {                                         \
+        return details_.fitInside(parent);    \
     }
 #endif
