@@ -748,6 +748,7 @@ TEST_CASE("Size")
                   "Create:Sizer[orientation=wxVERTICAL]",
                   "Create:wxButton[id=-1, pos=(-1,-1), size=(-1,-1), style=0, text=\"Hello\"]",
                   "SetScrollRate:2,3",
+                  "SetMinSize:0,0",
                   "topsizer:Sizer[orientation=wxVERTICAL]",
                   "controller:wxButton[id=-1, pos=(-1,-1), size=(-1,-1), style=0, text=\"Hello\"]",
                   "SetEnabled:true",
