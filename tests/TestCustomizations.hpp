@@ -272,6 +272,7 @@ struct TestSizer {
     wxOrientation orientation {};
     std::optional<int> cols {};
 
+    void FitInside(TestParent*);
     void SetSizeHints(TestParent*);
     void Add(TestParent*, wxSizerFlags const& flags);
     void Add(TestSizer*, wxSizerFlags const& flags);
@@ -295,6 +296,7 @@ struct TestParent {
     std::optional<wxColour> color {};
     std::optional<std::pair<int, int>> range {};
     std::optional<int> majorDim {};
+    std::optional<wxSize> minSize {};
 
     std::vector<std::string> log {};
     std::vector<std::string> menuDetails {};
@@ -340,6 +342,10 @@ struct TestParent {
     void Set3StateValue(wxCheckBoxState value)
     {
         log.push_back(std::format("Set3StateValue:{}", value == wxCHK_UNCHECKED ? "unchecked" : (value == wxCHK_CHECKED ? "checked" : "undetermined")));
+    }
+    void SetMinSize(wxSize const& value)
+    {
+        log.push_back(std::format("SetMinSize:{},{}", value.GetWidth(), value.GetHeight()));
     }
     void Wrap(bool value)
     {
@@ -410,6 +416,9 @@ struct std::formatter<wxUITests::TestParent, char> {
         }
         if (c.majorDim.has_value()) {
             std::format_to(ctx.out(), ", majorDim={}", *c.majorDim);
+        }
+        if (c.minSize.has_value()) {
+            std::format_to(ctx.out(), ", minSize={},{}", c.minSize->GetWidth(), c.minSize->GetHeight());
         }
         return std::format_to(ctx.out(), "]");
     }
@@ -516,6 +525,11 @@ inline auto TestParent::dump() const -> std::vector<std::string>
         result.push_back(std::format("scroller:{}", scroller));
     }
     return result;
+}
+
+inline void TestSizer::FitInside(TestParent* controller)
+{
+    log.push_back(std::format("FitInside:{}", *controller));
 }
 
 inline void TestSizer::SetSizeHints(TestParent* controller)

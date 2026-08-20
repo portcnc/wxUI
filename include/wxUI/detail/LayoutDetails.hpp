@@ -134,6 +134,15 @@ struct Sizer {
         return parent;
     }
 
+    template <typename CreatorFunction, typename Parent>
+    auto fitInside(CreatorFunction creator, Parent* parent) -> Parent*
+    {
+        auto* sizer = createAndAddWidgets(creator, parent, flags_.value_or(wxSizerFlags {}));
+        parent->SetSizer(sizer);
+        sizer->FitInside(parent);
+        return parent;
+    }
+
 private:
     template <typename CreatorFunction, typename Parent>
     auto createAndAddWidgets(CreatorFunction creator, Parent* parent, wxSizerFlags const& flags)
@@ -237,12 +246,22 @@ struct BoxSizer {
     auto fitTo(Parent* parent) -> Parent*
     {
         if (std::get<0>(scrollRate_).has_value() || std::get<1>(scrollRate_).has_value()) {
+            using ::wxUI::customizations::BoxSizerInfo;
             using ::wxUI::customizations::ScrolledWindowCreate;
+            using ::wxUI::customizations::SizerCreate;
+
             auto scroller = ScrolledWindowCreate(parent);
-            details_.fitTo(this->template createImpl<std::remove_pointer_t<decltype(scroller)>>(), scroller);
+            details_.fitInside(this->template createImpl<std::remove_pointer_t<decltype(scroller)>>(), scroller);
             auto xScrollRate = std::get<0>(scrollRate_).value_or(1);
             auto yScrollRate = std::get<1>(scrollRate_).value_or(xScrollRate);
             scroller->SetScrollRate(xScrollRate, yScrollRate);
+            scroller->SetMinSize(wxSize { 0, 0 });
+
+            auto sizer = SizerCreate(parent, BoxSizerInfo { std::nullopt, wxVERTICAL });
+            sizer->Add(scroller, wxSizerFlags { 1 }.Expand());
+            parent->SetSizer(sizer);
+            sizer->SetSizeHints(parent);
+
             return parent;
         }
         return details_.fitTo(this->template createImpl<Parent>(), parent);
