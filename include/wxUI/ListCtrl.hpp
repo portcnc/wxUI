@@ -23,7 +23,7 @@ SOFTWARE.
 */
 #pragma once
 
-#include <wx/listbox.h>
+#include <wx/listctrl.h>
 #include <wxUI/GetterSetter.hpp>
 #include <wxUI/Widget.hpp>
 
@@ -31,56 +31,56 @@ SOFTWARE.
 
 namespace wxUI {
 
-// https://docs.wxwidgets.org/latest/classwx_list_box.html
-struct ListBox {
-    using underlying_t = wxListBox;
+// https://docs.wxwidgets.org/latest/classwx_list_ctrl.html
+struct ListCtrl {
+    using underlying_t = wxListCtrl;
 
-    ListBox() = default;
+    ListCtrl() = default;
 
     template <typename String>
     requires details::utf8_text_choice<String>
-    explicit ListBox(std::initializer_list<String> choices)
-        : ListBox(wxID_ANY, choices)
+    explicit ListCtrl(std::initializer_list<String> choices)
+        : ListCtrl(wxID_ANY, choices)
     {
     }
 
-    explicit ListBox(std::initializer_list<std::initializer_list<char const*>> choices)
-        : ListBox(wxID_ANY, choices)
+    explicit ListCtrl(std::initializer_list<std::initializer_list<char const*>> choices)
+        : ListCtrl(wxID_ANY, choices)
     {
     }
 
-    explicit ListBox(details::Ranges::utf8_text_input_range auto&& choices)
-        : ListBox(wxID_ANY, std::forward<decltype(choices)>(choices))
+    explicit ListCtrl(details::Ranges::utf8_text_input_range auto&& choices)
+        : ListCtrl(wxID_ANY, std::forward<decltype(choices)>(choices))
     {
     }
 
     template <typename... Strings>
     requires(sizeof...(Strings) > 0) && (details::utf8_text_choice<Strings> && ...)
-    ListBox(Strings&&... choices)
-        : ListBox(wxID_ANY, std::forward<Strings>(choices)...)
+    ListCtrl(Strings&&... choices)
+        : ListCtrl(wxID_ANY, std::forward<Strings>(choices)...)
     {
     }
 
-    explicit ListBox(wxWindowID identity)
-        : ListBox(identity, std::initializer_list<char const*> {})
+    explicit ListCtrl(wxWindowID identity)
+        : ListCtrl(identity, std::initializer_list<char const*> {})
     {
     }
 
     template <typename String>
     requires details::utf8_text_choice<String>
-    ListBox(wxWindowID identity, std::initializer_list<String> choices)
+    ListCtrl(wxWindowID identity, std::initializer_list<String> choices)
         : details_(identity)
         , choices_(details::Ranges::convertTo(choices))
     {
     }
 
-    ListBox(wxWindowID identity, std::initializer_list<std::initializer_list<char const*>> choices)
+    ListCtrl(wxWindowID identity, std::initializer_list<std::initializer_list<char const*>> choices)
         : details_(identity)
         , choices_(details::Ranges::flattenToUtf8(choices))
     {
     }
 
-    ListBox(wxWindowID identity, details::Ranges::utf8_text_input_range auto&& choices)
+    ListCtrl(wxWindowID identity, details::Ranges::utf8_text_input_range auto&& choices)
         : details_(identity)
         , choices_(details::Ranges::ToVectorUtf8(std::forward<decltype(choices)>(choices)))
     {
@@ -88,83 +88,83 @@ struct ListBox {
 
     template <typename... Strings>
     requires(sizeof...(Strings) > 0) && (details::utf8_text_choice<Strings> && ...)
-    ListBox(wxWindowID identity, Strings&&... choices)
+    ListCtrl(wxWindowID identity, Strings&&... choices)
         : details_(identity)
         , choices_(details::Ranges::toVectorUtf8(std::forward<Strings>(choices)...))
     {
     }
 
-    auto setSelection(int which) & -> ListBox&
+    auto setSelection(int which) & -> ListCtrl&
     {
         selection_ = { which };
         return *this;
     }
 
-    auto setSelection(int which) && -> ListBox&&
+    auto setSelection(int which) && -> ListCtrl&&
     {
         selection_ = { which };
         return std::move(*this);
     }
 
-    auto withSelection(int which) & -> ListBox&
+    auto withSelection(int which) & -> ListCtrl&
     {
         selection_.push_back(which);
         return *this;
     }
 
-    auto withSelection(int which) && -> ListBox&&
+    auto withSelection(int which) && -> ListCtrl&&
     {
         selection_.push_back(which);
         return std::move(*this);
     }
 
-    auto withSelections(std::vector<int> which) & -> ListBox&
+    auto withSelections(std::vector<int> which) & -> ListCtrl&
     {
         selection_.insert(selection_.end(), which.begin(), which.end());
         return *this;
     }
 
-    auto withSelections(std::vector<int> which) && -> ListBox&&
+    auto withSelections(std::vector<int> which) && -> ListCtrl&&
     {
         selection_.insert(selection_.end(), which.begin(), which.end());
         return std::move(*this);
     }
 
-    auto withEnsureVisible(int which) & -> ListBox&
+    auto withEnsureVisible(int which) & -> ListCtrl&
     {
         ensureVisible_ = which;
         return *this;
     }
 
-    auto withEnsureVisible(int which) && -> ListBox&&
+    auto withEnsureVisible(int which) && -> ListCtrl&&
     {
         ensureVisible_ = which;
         return std::move(*this);
     }
 
     template <typename Function>
-    auto bind(Function func) & -> ListBox&
+    auto bind(Function func) & -> ListCtrl&
     {
         details_.bind(wxEVT_LISTBOX, func);
         return *this;
     }
 
     template <typename Function>
-    auto bind(Function func) && -> ListBox&&
+    auto bind(Function func) && -> ListCtrl&&
     {
         details_.bind(wxEVT_LISTBOX, func);
         return std::move(*this);
     }
 
     template <typename Function>
-    auto bindDClick(Function func) & -> ListBox&
+    auto bindDClick(Function func) & -> ListCtrl&
     {
         details_.bind(wxEVT_LISTBOX_DCLICK, func);
         return *this;
     }
 
     template <typename Function>
-    auto bindDClick(Function func) && -> ListBox&&
+    auto bindDClick(Function func) && -> ListCtrl&&
     {
         details_.bind(wxEVT_LISTBOX_DCLICK, func);
         return std::move(*this);
@@ -206,7 +206,7 @@ struct ListBox {
     };
 
 private:
-    details::WidgetDetails<ListBox, underlying_t> details_;
+    details::WidgetDetails<ListCtrl, underlying_t> details_;
     std::vector<wxString> choices_ {};
     std::vector<int> selection_;
     std::optional<int> ensureVisible_ {};
@@ -227,10 +227,10 @@ private:
     }
 
 public:
-    WXUI_FORWARD_ALL_TO_DETAILS(ListCtrl)
+    WXUI_FORWARD_ALL_TO_DETAILS(ListBox)
 };
 
-WXUI_WIDGET_STATIC_ASSERT_BOILERPLATE(ListCtrl);
+WXUI_WIDGET_STATIC_ASSERT_BOILERPLATE(ListBox);
 }
 
 #include <wxUI/detail/ZapMacros.hpp>
