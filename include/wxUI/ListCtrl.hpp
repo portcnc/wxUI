@@ -38,7 +38,9 @@ inline auto toWxListItem(auto&& text) -> wxListItem
     return item;
 }
 
-namespace Ranges {
+}
+
+namespace wxUI::details::Ranges {
 
 template <details::utf8_text_choice T>
 inline auto convertToListItems(std::initializer_list<T> choices) -> std::vector<wxListItem>
