@@ -31,10 +31,10 @@ SOFTWARE.
 
 namespace wxUI {
 
-namespace details {
+namespace wxUI::details {
 
-inline auto toWxListItem(auto &&text) {
-    wxListItem item;
+inline auto toWxListItem(auto &&text) -> wxListItem {
+    auto item = wxListItem {};
     item.SetText(std::forward<decltype(text)>(text));
     return item;
 }
