@@ -167,7 +167,7 @@ struct ListCtrl {
     auto withItems(std::vector<wxListItem> items) && -> ListCtrl&&
     {
         items_ = std::move(items);
-        return *this;
+        return std::move(*this);
     }
 
     auto withColumns(std::vector<wxListItem> columns) & -> ListCtrl&
@@ -179,7 +179,7 @@ struct ListCtrl {
     auto withColumns(std::vector<wxListItem> columns) && -> ListCtrl&&
     {
         columns_ = std::move(columns);
-        return *this;
+        return std::move(*this);
     }
 
     auto withNormalImages(wxVector<wxListItem> images) & -> ListCtrl&
@@ -191,7 +191,7 @@ struct ListCtrl {
     auto withNormalImages(wxVector<wxListItem> images) && -> ListCtrl&&
     {
         normalImages_ = std::move(images);
-        return *this;
+        return std::move(*this);
     }
 
     auto withSmallImages(wxVector<wxListItem> images) & -> ListCtrl&
@@ -203,7 +203,7 @@ struct ListCtrl {
     auto withSmallImages(wxVector<wxListItem> images) && -> ListCtrl&&
     {
         smallImages_ = std::move(images);
-        return *this;
+        return std::move(*this);
     }
 
     auto setSelection(int which) & -> ListCtrl&
