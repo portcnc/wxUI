@@ -31,7 +31,7 @@ SOFTWARE.
 
 namespace wxUI::details {
 
-inline auto toWxListItem(auto &&text) -> wxListItem {
+inline auto toWxListItem(auto&& text) -> wxListItem {
     auto item = wxListItem {};
     item.SetText(std::forward<decltype(text)>(text));
     return item;
@@ -341,11 +341,11 @@ private:
                 widget->SetSmallImages(*smallImages);
             }
 
-            for (long index {}; auto &&column : columns) {
+            for (long index {}; auto&& column : columns) {
                 widget->InsertColumn(index++, column);
             }
 
-            for (auto &&item : items) {
+            for (auto&& item : items) {
                 widget->InsertItem(item);
             }
 
