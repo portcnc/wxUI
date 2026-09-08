@@ -206,18 +206,6 @@ struct ListCtrl {
         return std::move(*this);
     }
 
-    auto setSelection(int which) & -> ListCtrl&
-    {
-        selection_ = { which };
-        return *this;
-    }
-
-    auto setSelection(int which) && -> ListCtrl&&
-    {
-        selection_ = { which };
-        return std::move(*this);
-    }
-
     auto withEnsureVisible(int which) & -> ListCtrl&
     {
         ensureVisible_ = which;
