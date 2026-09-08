@@ -75,7 +75,7 @@ inline auto toVectorListItems(Strings&&... strings) -> std::vector<wxListItem>
     return result;
 }
 
-template <utf8_text_input_range Range>
+template <details::Ranges::utf8_text_input_range Range>
 inline auto ToVectorListItems(Range&& range) -> std::vector<wxListItem>
 {
     auto result = std::vector<wxListItem> {};
