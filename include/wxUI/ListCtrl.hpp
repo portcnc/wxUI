@@ -46,7 +46,7 @@ inline auto convertToListItems(std::initializer_list<T> choices) -> std::vector<
     std::vector<wxListItem> result;
     result.reserve(choices.size());
     for (auto const& choice : choices) {
-        result.push_back(details::Ranges::toWxListItem(choice));
+        result.push_back(details::toWxListItem(choice));
     }
     return result;
 }
