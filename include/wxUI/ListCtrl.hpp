@@ -160,25 +160,51 @@ struct ListCtrl {
 
     auto withItems(std::vector<wxListItem> items) & -> ListCtrl&
     {
-        items_ = std::move(items);
+        items_.insert(items_.end(), std::make_move_iterator(items.begin()), std::make_move_iterator(items.end()));
         return *this;
     }
 
     auto withItems(std::vector<wxListItem> items) && -> ListCtrl&&
     {
-        items_ = std::move(items);
+        items_.insert(items_.end(), std::make_move_iterator(items.begin()), std::make_move_iterator(items.end()));
+        return std::move(*this);
+    }
+
+    auto withAddedColumn(std::string_view title, wxListColumnFormat format = wxLIST_FORMAT_LEFT, int width = -1) & -> ListCtrl&
+    {
+        wxListItem column;
+
+        column.SetColumn(static_cast<int>(columns_.size()));
+        column.SetText(details::toWxString(title));
+        column.SetAlign(format);
+        column.SetWidth(width);
+
+        columns_.push_back(std::move(column));
+        return *this;
+    }
+
+    auto withAddedColumn(std::string_view title, wxListColumnFormat format = wxLIST_FORMAT_LEFT, int width = -1) && -> ListCtrl&&
+    {
+        wxListItem column;
+
+        column.SetColumn(static_cast<int>(columns_.size()));
+        column.SetText(details::toWxString(title));
+        column.SetAlign(format);
+        column.SetWidth(width);
+
+        columns_.push_back(std::move(column));
         return std::move(*this);
     }
 
     auto withColumns(std::vector<wxListItem> columns) & -> ListCtrl&
     {
-        columns_ = std::move(columns);
+        columns_.insert(columns_.end(), std::make_move_iterator(columns.begin()), std::make_move_iterator(columns.end()));
         return *this;
     }
 
     auto withColumns(std::vector<wxListItem> columns) && -> ListCtrl&&
     {
-        columns_ = std::move(columns);
+        columns_.insert(columns_.end(), std::make_move_iterator(columns.begin()), std::make_move_iterator(columns.end()));
         return std::move(*this);
     }
 
