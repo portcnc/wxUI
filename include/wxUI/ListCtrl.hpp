@@ -218,30 +218,6 @@ struct ListCtrl {
         return std::move(*this);
     }
 
-    auto withSelection(int which) & -> ListCtrl&
-    {
-        selection_.push_back(which);
-        return *this;
-    }
-
-    auto withSelection(int which) && -> ListCtrl&&
-    {
-        selection_.push_back(which);
-        return std::move(*this);
-    }
-
-    auto withSelections(std::vector<int> which) & -> ListCtrl&
-    {
-        selection_.insert(selection_.end(), which.begin(), which.end());
-        return *this;
-    }
-
-    auto withSelections(std::vector<int> which) && -> ListCtrl&&
-    {
-        selection_.insert(selection_.end(), which.begin(), which.end());
-        return std::move(*this);
-    }
-
     auto withEnsureVisible(int which) & -> ListCtrl&
     {
         ensureVisible_ = which;
@@ -282,46 +258,12 @@ struct ListCtrl {
         return std::move(*this);
     }
 
-    struct Proxy : details::Proxy<underlying_t> {
-        [[nodiscard]] auto selection() const
-        {
-            auto* controller = control();
-            return details::GetterSetter {
-                [controller] { return controller->GetSelection(); },
-                [controller](int selection) { controller->SetSelection(selection); }
-            };
-        }
-
-        [[nodiscard]] auto selections() const
-        {
-            auto* controller = control();
-            return details::GetterSetter {
-                [controller]() -> std::vector<int> {
-                    wxArrayInt selectedItems;
-                    controller->GetSelections(selectedItems);
-                    return std::vector<int>(selectedItems.begin(), selectedItems.end());
-                },
-                [controller](std::vector<int> const& selections) {
-                    controller->DeselectAll();
-                    for (auto&& selection : selections) {
-                        controller->SetSelection(selection);
-                    }
-                }
-            };
-        }
-
-        auto
-        operator*() const
-        {
-            return selection();
-        }
-    };
+    struct Proxy : details::Proxy<underlying_t> {};
 
 private:
     details::WidgetDetails<ListCtrl, underlying_t> details_;
     std::vector<wxListItem> columns_ {};
     std::vector<wxListItem> items_ {};
-    std::vector<int> selection_;
     std::optional<int> ensureVisible_ {};
     std::optional<wxVector<wxBitmapBundle>> normalImages_ {};
     std::optional<wxVector<wxBitmapBundle>> smallImages_ {};
@@ -346,10 +288,6 @@ private:
 
             for (auto&& item : items) {
                 widget->InsertItem(item);
-            }
-
-            for (auto&& selection : selections) {
-                widget->SetSelection(selection);
             }
 
             if (ensureVisible) {
