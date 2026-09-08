@@ -29,8 +29,6 @@ SOFTWARE.
 
 #include <wxUI/detail/HelperMacros.hpp>
 
-namespace wxUI {
-
 namespace wxUI::details {
 
 inline auto toWxListItem(auto &&text) -> wxListItem {
@@ -90,6 +88,8 @@ inline auto ToVectorListItems(Range&& range) -> std::vector<wxListItem>
 }
 
 }
+
+namespace wxUI {
 
 // https://docs.wxwidgets.org/latest/classwx_list_ctrl.html
 struct ListCtrl {
