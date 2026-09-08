@@ -29,7 +29,7 @@ SOFTWARE.
 
 #include <wxUI/detail/HelperMacros.hpp>
 
-namespace wxUI::details {
+namespace wxUI::details::Ranges {
 
 inline auto toWxListItem(auto&& text) -> wxListItem 
 {
@@ -75,7 +75,7 @@ inline auto toVectorListItems(Strings&&... strings) -> std::vector<wxListItem>
     return result;
 }
 
-template <details::Ranges::utf8_text_input_range Range>
+template <utf8_text_input_range Range>
 inline auto ToVectorListItems(Range&& range) -> std::vector<wxListItem>
 {
     auto result = std::vector<wxListItem> {};
