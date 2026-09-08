@@ -227,10 +227,10 @@ private:
     }
 
 public:
-    WXUI_FORWARD_ALL_TO_DETAILS(ListCtrl)
+    WXUI_FORWARD_ALL_TO_DETAILS(ListBox)
 };
 
-WXUI_WIDGET_STATIC_ASSERT_BOILERPLATE(ListCtrl);
+WXUI_WIDGET_STATIC_ASSERT_BOILERPLATE(ListBox);
 }
 
 #include <wxUI/detail/ZapMacros.hpp>
