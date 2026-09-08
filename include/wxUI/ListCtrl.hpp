@@ -93,7 +93,6 @@ inline auto ToVectorListItems(Range&& range) -> std::vector<wxListItem>
 }
 
 }
-}
 
 namespace wxUI {
 
