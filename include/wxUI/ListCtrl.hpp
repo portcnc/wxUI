@@ -31,7 +31,8 @@ SOFTWARE.
 
 namespace wxUI::details {
 
-inline auto toWxListItem(auto&& text) -> wxListItem {
+inline auto toWxListItem(auto&& text) -> wxListItem 
+{
     auto item = wxListItem {};
     item.SetText(std::forward<decltype(text)>(text));
     return item;
@@ -325,12 +326,7 @@ private:
     template <typename Parent>
     auto createImpl()
     {
-        return [&columns = columns_, 
-            &items = items_,
-            &normalImages = normalImages_,
-            &smallImages = smallImages_,
-            &selections = selection_,
-            &ensureVisible = ensureVisible_](Parent* parent, wxWindowID id, wxPoint pos, wxSize size, int64_t style) {
+        return [&columns = columns_, &items = items_, &normalImages = normalImages_, &smallImages = smallImages_, &selections = selection_, &ensureVisible = ensureVisible_](Parent* parent, wxWindowID id, wxPoint pos, wxSize size, int64_t style) {
             auto* widget = customizations::ParentCreate<underlying_t>(parent, id, pos, size, style);
 
             if (normalImages) {
