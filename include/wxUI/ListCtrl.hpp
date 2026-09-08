@@ -29,7 +29,7 @@ SOFTWARE.
 
 #include <wxUI/detail/HelperMacros.hpp>
 
-namespace wxUI::details::Ranges {
+namespace wxUI::details {
 
 inline auto toWxListItem(auto&& text) -> wxListItem 
 {
@@ -38,13 +38,15 @@ inline auto toWxListItem(auto&& text) -> wxListItem
     return item;
 }
 
+namespace Ranges {
+
 template <details::utf8_text_choice T>
 inline auto convertToListItems(std::initializer_list<T> choices) -> std::vector<wxListItem>
 {
     std::vector<wxListItem> result;
     result.reserve(choices.size());
     for (auto const& choice : choices) {
-        result.push_back(details::toWxListItem(choice));
+        result.push_back(details::Ranges::toWxListItem(choice));
     }
     return result;
 }
@@ -88,6 +90,7 @@ inline auto ToVectorListItems(Range&& range) -> std::vector<wxListItem>
     return result;
 }
 
+}
 }
 
 namespace wxUI {
