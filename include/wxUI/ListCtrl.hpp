@@ -182,25 +182,25 @@ struct ListCtrl {
         return std::move(*this);
     }
 
-    auto withNormalImages(wxVector<wxListItem> images) & -> ListCtrl&
+    auto withNormalImages(wxVector<wxBitmapBundle> images) & -> ListCtrl&
     {
         normalImages_ = std::move(images);
         return *this;
     }
 
-    auto withNormalImages(wxVector<wxListItem> images) && -> ListCtrl&&
+    auto withNormalImages(wxVector<wxBitmapBundle> images) && -> ListCtrl&&
     {
         normalImages_ = std::move(images);
         return std::move(*this);
     }
 
-    auto withSmallImages(wxVector<wxListItem> images) & -> ListCtrl&
+    auto withSmallImages(wxVector<wxBitmapBundle> images) & -> ListCtrl&
     {
         smallImages_ = std::move(images);
         return *this;
     }
 
-    auto withSmallImages(wxVector<wxListItem> images) && -> ListCtrl&&
+    auto withSmallImages(wxVector<wxBitmapBundle> images) && -> ListCtrl&&
     {
         smallImages_ = std::move(images);
         return std::move(*this);
