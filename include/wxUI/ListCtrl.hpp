@@ -274,7 +274,7 @@ struct ListCtrl {
         return std::move(*this);
     }
 
-    struct Proxy : details::Proxy<underlying_t> {};
+    struct Proxy : details::Proxy<underlying_t> { };
 
 private:
     details::WidgetDetails<ListCtrl, underlying_t> details_;
