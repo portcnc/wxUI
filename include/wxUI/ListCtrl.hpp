@@ -316,7 +316,9 @@ struct ListCtrl {
                         select(controller, existing, false);
                     }
 
-                    select(controller, selection, true);
+                    if (selection >= 0) {
+                        select(controller, selection, true);
+                    }
                 }
             };
         }
