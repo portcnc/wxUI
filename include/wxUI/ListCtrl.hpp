@@ -275,7 +275,7 @@ struct ListCtrl {
 
     struct Proxy : details::Proxy<underlying_t> { 
     private:
-        [[nodiscard]] static auto selected(underlying_t* controller) const 
+        [[nodiscard]] static auto selected(underlying_t* controller)
         {
             std::vector<int> selectedItems;
             long item = -1;
