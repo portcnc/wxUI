@@ -273,7 +273,81 @@ struct ListCtrl {
         return std::move(*this);
     }
 
-    struct Proxy : details::Proxy<underlying_t> { };
+    struct Proxy : details::Proxy<underlying_t> { 
+    private:
+        [[nodiscard]] static auto selected(underlying_t* controller) const 
+        {
+            std::vector<int> selectedItems;
+            long item = -1;
+            while (true) {
+                item = controller->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+
+                if (item == -1) {
+                    break;
+                }
+
+                selectedItems.push_back(item);
+            }
+            return selectedItems;
+        }
+
+        static void select(underlying_t* controller, long index, bool selected) 
+        {
+            wxListItem item;
+
+            item.SetId(index);
+            item.SetMask(wxLIST_MASK_STATE);
+            
+            controller->GetItem(item);
+            item.SetState(selected ? item.GetState() | wxLIST_STATE_SELECTED : item.GetState() & ~wxLIST_STATE_SELECTED);
+            controller->SetItem(item);
+        }
+
+    public:
+        [[nodiscard]] auto selection() const
+        {
+            auto* controller = control();
+            return details::GetterSetter {
+                [controller] { return controller->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED); },
+                [controller](int selection) { 
+                    auto existingSelections = selected(controller);
+                    
+                    for (auto&& existing : existingSelections) {
+                        select(controller, existing, false);
+                    }
+
+                    select(controller, selection, true);
+                }
+            };
+        }
+
+        [[nodiscard]] auto selections() const
+        {
+            auto* controller = control();
+            return details::GetterSetter {
+                [controller]() -> std::vector<int> {
+                    return selected(controller);
+                },
+                [controller](std::vector<int> const& selections) {
+                    auto existingSelections = selected(controller);
+                    
+                    for (auto&& existing : existingSelections) {
+                        select(controller, existing, false);
+                    }
+                    
+                    for (auto&& selection : selections) {
+                        select(controller, selection, true);
+                    }
+                }
+            };
+        }
+
+        auto
+        operator*() const
+        {
+            return selection();
+        }
+    };
 
 private:
     details::WidgetDetails<ListCtrl, underlying_t> details_;
