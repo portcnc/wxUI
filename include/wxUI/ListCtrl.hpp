@@ -269,7 +269,7 @@ struct ListCtrl {
     template <typename Function>
     auto bindDClick(Function func) && -> ListCtrl&&
     {
-        details_.bind(wxEVT_LISTBOX_ITEM_ACTIVATED, func);
+        details_.bind(wxEVT_LIST_ITEM_ACTIVATED, func);
         return std::move(*this);
     }
 
