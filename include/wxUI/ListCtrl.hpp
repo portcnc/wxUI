@@ -297,9 +297,9 @@ struct ListCtrl {
 
             item.SetId(index);
             item.SetMask(wxLIST_MASK_STATE);
+            item.SetStateMask(wxLIST_STATE_SELECTED);
+            item.SetState(selected ? wxLIST_STATE_SELECTED : 0);
             
-            controller->GetItem(item);
-            item.SetState(selected ? item.GetState() | wxLIST_STATE_SELECTED : item.GetState() & ~wxLIST_STATE_SELECTED);
             controller->SetItem(item);
         }
 
