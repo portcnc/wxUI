@@ -248,28 +248,28 @@ struct ListCtrl {
     template <typename Function>
     auto bind(Function func) & -> ListCtrl&
     {
-        details_.bind(wxEVT_LISTBOX, func);
+        details_.bind(wxEVT_LIST_ITEM_SELECTED, func);
         return *this;
     }
 
     template <typename Function>
     auto bind(Function func) && -> ListCtrl&&
     {
-        details_.bind(wxEVT_LISTBOX, func);
+        details_.bind(wxEVT_LIST_ITEM_SELECTED, func);
         return std::move(*this);
     }
 
     template <typename Function>
     auto bindDClick(Function func) & -> ListCtrl&
     {
-        details_.bind(wxEVT_LISTBOX_DCLICK, func);
+        details_.bind(wxEVT_LIST_ITEM_ACTIVATED, func);
         return *this;
     }
 
     template <typename Function>
     auto bindDClick(Function func) && -> ListCtrl&&
     {
-        details_.bind(wxEVT_LISTBOX_DCLICK, func);
+        details_.bind(wxEVT_LISTBOX_ITEM_ACTIVATED, func);
         return std::move(*this);
     }
 
